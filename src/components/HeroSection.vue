@@ -1,7 +1,7 @@
 <template>
   <!-- Section héro : première chose visible sur la page -->
   <section class="min-h-screen flex items-center
-                  pt-20 pb-12 px-6
+                  pt-32 pb-12 px-6
                   bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950
                   relative overflow-hidden">
 
@@ -29,15 +29,7 @@
         <!-- ── COLONNE GAUCHE : TEXTE ──────────────────── -->
         <div class="flex-1 text-center md:text-left">
 
-          <!-- Badge disponible -->
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full
-                      bg-emerald-500/10 border border-emerald-500/30
-                      text-emerald-400 text-xs font-mono mb-8
-                      animate-fade-in">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Disponible · Available
-          </div>
-
+         
           <!-- Bonjour -->
           <p class="text-blue-300 font-mono text-lg mb-2 animate-slide-up"
              style="animation-delay: 0.1s;">
@@ -143,7 +135,7 @@
 
               <!-- ⚠️ REMPLACEZ src="/photo.jpg" PAR VOTRE VRAIE PHOTO -->
               <!-- Mettez votre photo dans le dossier public/ -->
-              <img src="/public/saadM.jpeg"
+              <img src="/public/saadAI.png"
                    alt="MOUSSAIF SAAD"
                    class="w-full h-full object-cover object-center
                           transition-transform duration-500
@@ -179,14 +171,20 @@
                 Full Stack Engineer
               </span>
             </div>
+            
 
             <!-- Points décoratifs autour de la photo -->
-            <div class="absolute -top-2 -right-2 w-4 h-4 rounded-full
-                        bg-emerald-400/60 animate-bounce z-20"
-                 style="animation-delay: 0.5s;"></div>
-            <div class="absolute -bottom-2 -left-2 w-3 h-3 rounded-full
-                        bg-blue-400/60 animate-bounce z-20"
-                 style="animation-delay: 1s;"></div>
+            <div class="absolute -top-3 -right-3 w-5 h-5 rounded-full
+            bg-emerald-400
+            shadow-[0_0_15px_rgba(16,185,129,0.9)]
+            animate-pulse z-20"></div>
+
+<!-- Point 2 -->
+<div class="absolute -bottom-3 -left-3 w-4 h-4 rounded-full
+            bg-blue-400
+            shadow-[0_0_15px_rgba(96,165,250,0.9)]
+            animate-pulse z-20"
+     style="animation-delay: 0.7s;"></div>
 
           </div>
         </div>

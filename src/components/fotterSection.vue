@@ -7,7 +7,7 @@
 
       <!-- Logo -->
       <span class="font-mono text-emerald-600 dark:text-emerald-400 font-bold">
-        &lt;Alex Martin /&gt;
+        &lt;MOUSSAIF SAAD  /&gt;
       </span>
 
       <!-- Copyright -->
