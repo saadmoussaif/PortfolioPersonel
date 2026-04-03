@@ -2,7 +2,7 @@
   <nav :class="[
     'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
     scrolled
-      ? 'bg-blue-950/95 backdrop-blur-lg shadow-lg shadow-blue-950/50 border-b border-blue-800/50'
+      ? 'bg-blue-950/95 backdrop-blur-lg shadow-lg border-b border-blue-800/50'
       : 'bg-blue-900/90 backdrop-blur-md border-b border-blue-800/30'
   ]">
 
@@ -12,7 +12,6 @@
       <div class="flex items-center gap-3">
         <div class="relative w-10 h-10 flex items-center justify-center">
           <div class="absolute inset-0 rounded-full bg-emerald-400 blur-md opacity-40"></div>
-
           <div class="relative w-10 h-10 rounded-full flex items-center justify-center
                       bg-gradient-to-br from-emerald-400 to-blue-500
                       text-white font-bold text-sm shadow-lg">
@@ -26,10 +25,9 @@
         </span>
       </div>
 
-      <!-- NAV LINKS -->
+      <!-- DESKTOP NAV -->
       <div class="hidden md:flex items-center gap-2 relative">
 
-        <!-- UNDERLINE ANIMÉE -->
         <span
           class="absolute bottom-0 h-0.5 bg-emerald-400 transition-all duration-300"
           :style="indicatorStyle">
@@ -48,7 +46,6 @@
                : 'text-gray-300 hover:text-white'
            ]">
 
-          <!-- BACKGROUND HOVER -->
           <span :class="[
             'absolute inset-0 rounded-lg transition-all duration-300',
             hoveredItem === item && activeSection !== item
@@ -56,10 +53,8 @@
               : 'bg-blue-800/0 opacity-0 scale-95'
           ]"></span>
 
-          <!-- CONTENT -->
           <span class="relative z-10 flex items-center gap-1.5">
 
-            <!-- ICON -->
             <span class="text-emerald-400 text-xs transition-all duration-300"
                   :class="hoveredItem === item || activeSection === item
                     ? 'opacity-100 translate-x-0'
@@ -75,62 +70,88 @@
 
       </div>
 
-      <!-- RIGHT BUTTONS -->
+      <!-- RIGHT -->
       <div class="flex items-center gap-3">
 
-        <!-- LANGUAGE DROPDOWN -->
+        <!-- LANG -->
         <div class="relative">
 
           <button 
-            @click="open = !open"
+            @click="openLang = !openLang"
             class="font-mono text-xs px-3 py-1.5 
                    border-2 border-white 
                    text-gray-300 
                    hover:border-emerald-400 hover:text-emerald-400
                    rounded">
-
             {{ lang === 'fr' ? 'FR' : 'EN' }}
-
           </button>
 
-          <div v-if="open"
+          <div v-if="openLang"
                class="absolute right-0 mt-2 w-32 bg-blue-950 border border-blue-700 rounded-lg shadow-lg z-50 p-2 space-y-2">
 
-            <!-- FR -->
             <div 
               @click="changeLang('fr')"
               class="flex items-center justify-between cursor-pointer px-2 py-1 hover:bg-blue-800 rounded">
-
               <span class="text-gray-300 text-sm">Français</span>
-
-              <span class="border border-white px-2 py-0.5 text-xs text-gray-300 rounded">
-                FR
-              </span>
-
+              <span class="border border-white px-2 py-0.5 text-xs text-gray-300 rounded">FR</span>
             </div>
 
-            <!-- EN -->
             <div 
               @click="changeLang('en')"
               class="flex items-center justify-between cursor-pointer px-2 py-1 hover:bg-blue-800 rounded">
-
               <span class="text-gray-300 text-sm">English</span>
-
-              <span class="border border-white px-2 py-0.5 text-xs text-gray-300 rounded">
-                EN
-              </span>
-
+              <span class="border border-white px-2 py-0.5 text-xs text-gray-300 rounded">EN</span>
             </div>
 
           </div>
 
         </div>
 
-        <!-- DARK MODE -->
-        <button @click="$emit('toggleDark')"
-                class="w-9 h-9 rounded-full flex items-center justify-center border border-blue-600 text-gray-200 hover:border-emerald-400">
-          {{ isDark ? '☀️' : '🌙' }}
+        <!-- MOBILE BUTTON -->
+        <button @click="toggleMenu"
+                class="md:hidden text-white text-2xl">
+          ☰
         </button>
+
+      </div>
+
+    </div>
+
+    <!-- OVERLAY -->
+    <div v-if="menuOpen"
+         @click="toggleMenu"
+         class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300">
+    </div>
+
+    <!-- MOBILE MENU -->
+    <div :class="[
+      'fixed top-4 right-4 h-[calc(100%-2rem)] w-1/2 max-w-sm z-50',
+      'bg-[#2c2c2c]/95 backdrop-blur-xl',
+      'border border-gray-500/30',
+      'rounded-2xl',
+      'shadow-2xl shadow-black/40',
+      'transform transition-all duration-500 ease-in-out',
+      menuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+    ]">
+
+      <div class="flex justify-between items-center p-5 border-b border-gray-600/30">
+        <span class="text-white font-semibold">Menu</span>
+        <button @click="toggleMenu" class="text-white text-xl">✕</button>
+      </div>
+
+      <div class="flex flex-col gap-4 p-6">
+
+        <a v-for="item in navItems"
+           :key="item"
+           @click="handleMobileClick(item)"
+           class="flex items-center gap-3 text-gray-300 text-base 
+                  hover:text-white hover:bg-white/5 px-3 py-2 rounded-lg 
+                  transition cursor-pointer">
+
+          <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+
+          {{ item }}
+        </a>
 
       </div>
 
@@ -144,22 +165,20 @@ export default {
   name: 'Navbar',
 
   props: {
-    isDark: Boolean,
     lang: String,
     t: Object,
   },
 
-  emits: ['toggleDark', 'toggleLang'],
+  emits: ['toggleLang'],
 
   data() {
     return {
+      scrolled: false,
+      menuOpen: false,
+      openLang: false,
       activeSection: '',
       hoveredItem: null,
-      scrolled: false,
-      open: false,
-
-      itemRefs: [],
-      indicatorStyle: {}
+      itemRefs: {}
     }
   },
 
@@ -171,15 +190,19 @@ export default {
         this.t.nav.projects,
         this.t.nav.contact,
       ]
+    },
+    indicatorStyle() {
+      const activeRef = this.itemRefs[this.activeSection]
+      if (!activeRef) return { width: '0px', left: '0px' }
+      return {
+        width: activeRef.offsetWidth + 'px',
+        left: activeRef.offsetLeft + 'px'
+      }
     }
   },
 
   mounted() {
     window.addEventListener('scroll', this.onScroll)
-
-    this.$nextTick(() => {
-      this.updateIndicator()
-    })
   },
 
   beforeUnmount() {
@@ -188,20 +211,22 @@ export default {
 
   methods: {
 
-    setItemRef(el) {
-      if (el) this.itemRefs.push(el)
+    toggleMenu() {
+      this.menuOpen = !this.menuOpen
     },
 
-    updateIndicator() {
-      const index = this.navItems.findIndex(item => item === this.activeSection)
-      const el = this.itemRefs[index]
+    handleMobileClick(item) {
+      this.scrollTo(item)
+      this.menuOpen = false
+    },
 
-      if (el) {
-        this.indicatorStyle = {
-          width: el.offsetWidth + 'px',
-          transform: `translateX(${el.offsetLeft}px)`
-        }
+    changeLang(l) {
+      if (this.lang === l) {
+        this.openLang = false
+        return
       }
+      this.$emit('toggleLang', l)
+      this.openLang = false
     },
 
     scrollTo(item) {
@@ -214,48 +239,43 @@ export default {
 
       const el = document.getElementById(ids[item])
       if (el) el.scrollIntoView({ behavior: 'smooth' })
-
-      this.open = false
     },
 
     scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     },
 
-    onScroll() {
-      this.scrolled = window.scrollY > 20
-
-      const sections = {
-        [this.t.nav.about]: document.getElementById('about'),
-        [this.t.nav.skills]: document.getElementById('skills'),
-        [this.t.nav.projects]: document.getElementById('projects'),
-        [this.t.nav.contact]: document.getElementById('contact'),
+    setItemRef(el) {
+      if (el) {
+        this.itemRefs[el.textContent.trim()] = el
       }
-
-      for (const key in sections) {
-        const el = sections[key]
-        if (!el) continue
-
-        const rect = el.getBoundingClientRect()
-
-        if (rect.top <= 80 && rect.bottom >= 80) {
-          this.activeSection = key
-          break
-        }
-      }
-
-      this.updateIndicator()
     },
 
-    changeLang(l) {
-      if (this.lang === l) {
-        this.open = false
-        return
+    updateActiveSection() {
+      const ids = {
+        [this.t.nav.about]: 'about',
+        [this.t.nav.skills]: 'skills',
+        [this.t.nav.projects]: 'projects',
+        [this.t.nav.contact]: 'contact',
       }
 
-      this.$emit('toggleLang', l)
-      this.open = false
+      for (const [name, id] of Object.entries(ids)) {
+        const el = document.getElementById(id)
+        if (el) {
+          const rect = el.getBoundingClientRect()
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            this.activeSection = name
+            return
+          }
+        }
+      }
+    },
+
+    onScroll() {
+      this.scrolled = window.scrollY > 20
+      this.updateActiveSection()
     }
+
   }
 }
 </script>

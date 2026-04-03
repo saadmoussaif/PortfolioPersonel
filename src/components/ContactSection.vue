@@ -1,232 +1,252 @@
 <template>
-  <!-- Section Contact -->
-  <section id="contact" class="py-24 px-6 bg-white dark:bg-gray-950">
-    <div class="max-w-6xl mx-auto">
+  <section id="contact"
+           class="py-24 px-6 bg-gradient-to-b from-blue-950 to-blue-900
+                  relative overflow-hidden text-white min-h-screen
+                  flex items-center">
 
-      <!-- HEADER -->
-      <div class="mb-14">
-        <p class="font-mono text-xs text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mb-3">
-          // {{ t.contact.label }}
-        </p>
+    <!-- ─── FOND DÉCORATIF ────────────────────────────────── -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full
+                  bg-emerald-500/5 blur-3xl"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full
+                  bg-blue-400/5 blur-3xl"></div>
+      <!-- Grille décorative -->
+      <div class="absolute inset-0 opacity-5"
+           style="background-image: linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px),
+                                    linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px);
+                  background-size: 60px 60px;">
+      </div>
+    </div>
 
-        <h2 class="text-4xl md:text-5xl font-bold">
+    <div class="max-w-4xl mx-auto relative z-10 w-full">
+
+      <!-- ─── TITRE ──────────────────────────────────────── -->
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-6xl font-bold text-white mb-6">
           {{ t.contact.title }}
         </h2>
-
-        <p class="text-gray-500 dark:text-gray-400 mt-4">
+        <p class="text-blue-300/70 text-lg max-w-lg mx-auto">
           {{ t.contact.desc }}
         </p>
+        <!-- Ligne décorative -->
+        <div class="mt-6 flex justify-center">
+          <div class="h-0.5 w-16 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full"></div>
+        </div>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-12 items-start">
+      <!-- ─── LIENS DE CONTACT ───────────────────────────── -->
+      <div class="flex flex-col gap-5 max-w-xl mx-auto">
 
-        <!-- LEFT: PROFILE + LINKS -->
-        <div class="space-y-6">
+        <a v-for="(link, index) in links"
+           :key="link.label"
+           :href="link.href"
+           target="_blank"
+           class="group relative inline-flex items-center gap-4 px-6 py-3 rounded-xl
+                  border border-blue-700/20
+                  bg-blue-900/25 backdrop-blur-sm
+                  hover:border-cyan-300/90
+                  hover:bg-gradient-to-r hover:from-blue-700 hover:via-blue-600 hover:to-cyan-500/40
+                  hover:-translate-y-1 hover:scale-105
+                  hover:shadow-2xl
+                  transition-all duration-300 ease-out overflow-hidden link-hover-effect"
+           style="margin-right: 16px;"           :style="{
+             opacity: visible ? 1 : 0,
+             transform: visible ? 'translateY(0)' : 'translateY(40px)',
+             transition: 'all 0.6s ease-out',
+             transitionDelay: index * 150 + 'ms'
+           }"
+           :class="link.hoverClass">
 
-          <!-- PHOTO -->
-       
+          <!-- Fond coloré qui glisse au hover -->
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100
+                      transition-opacity duration-400 rounded-2xl"
+               :class="link.bgClass"></div>
 
-          <!-- LINKS -->
-          <div class="space-y-4">
+          <!-- Ligne colorée à gauche -->
+          <div class="absolute left-0 top-0 bottom-0 w-0.5 rounded-l-2xl
+                      scale-y-0 group-hover:scale-y-100
+                      transition-transform duration-400 origin-bottom"
+               :class="link.lineClass"></div>
 
-            <a v-for="link in links"
-               :key="link.label"
-               :href="link.href"
-               target="_blank"
-               class="flex items-center gap-4 p-4 rounded-xl
-                      border border-gray-200 dark:border-gray-800
-                      hover:border-emerald-500 hover:bg-emerald-50
-                      dark:hover:bg-emerald-900/10
-                      transition-all duration-300 group
-                      hover:-translate-y-1 hover:shadow-lg">
-
-              <!-- ICON -->
-              <div class="w-10 h-10 flex items-center justify-center
-                          transition-transform duration-300 group-hover:scale-110">
-
-                <component :is="components[link.icon]" class="w-6 h-6" />
-
-              </div>
-
-              <!-- TEXT -->
-              <div>
-                <div class="font-mono text-xs text-gray-400">
-                  {{ link.label }}
-                </div>
-
-                <div class="text-gray-700 dark:text-gray-300
-                            group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
-                  {{ link.value }}
-                </div>
-              </div>
-
-            </a>
-
-          </div>
-        </div>
-
-        <!-- RIGHT: FORM -->
-        <div class="space-y-4">
-
-          <!-- NAME -->
-          <div>
-            <label class="font-mono text-xs text-emerald-600 uppercase block mb-2">
-              {{ t.contact.name }}
-            </label>
-
-            <input v-model="form.name" type="text"
-                   class="w-full px-4 py-3 rounded-lg text-sm
-                          bg-gray-50 dark:bg-gray-900
-                          border border-gray-200 dark:border-gray-700
-                          focus:border-emerald-500 focus:outline-none"/>
+          <!-- Icône / Logo -->
+          <div class="relative z-10 w-14 h-14 rounded-xl flex items-center justify-center
+                      border border-blue-700/50 bg-blue-800/50
+                      group-hover:scale-110 group-hover:rotate-3
+                      group-hover:border-white/20 group-hover:bg-white/10
+                      transition-all duration-300 flex-shrink-0"
+               :class="link.iconHoverClass">
+            <img :src="'/' + link.icon"
+                 :alt="link.label"
+                 class="w-8 h-8 object-contain transition-all duration-300"
+                 :class="[link.imgClass, link.imgHoverClass]"
+                 @error="(e) => e.target.style.display='none'" />
           </div>
 
-          <!-- EMAIL -->
-          <div>
-            <label class="font-mono text-xs text-emerald-600 uppercase block mb-2">
-              {{ t.contact.email }}
-            </label>
-
-            <input v-model="form.email" type="email"
-                   class="w-full px-4 py-3 rounded-lg text-sm
-                          bg-gray-50 dark:bg-gray-900
-                          border border-gray-200 dark:border-gray-700
-                          focus:border-emerald-500 focus:outline-none"/>
+          <!-- Texte -->
+          <div class="relative z-10 flex-1">
+            <div class="font-mono text-xs text-blue-400 mb-1
+                        group-hover:text-white/60 transition-colors duration-300">
+              {{ link.label }}
+            </div>
+            <div class="text-white font-medium text-sm
+                        group-hover:text-white transition-colors duration-300">
+              {{ link.value }}
+            </div>
           </div>
 
-          <!-- MESSAGE -->
-          <div>
-            <label class="font-mono text-xs text-emerald-600 uppercase block mb-2">
-              {{ t.contact.message }}
-            </label>
-
-            <textarea v-model="form.message" rows="5"
-                      class="w-full px-4 py-3 rounded-lg text-sm
-                             bg-gray-50 dark:bg-gray-900
-                             border border-gray-200 dark:border-gray-700
-                             focus:border-emerald-500 focus:outline-none resize-none">
-            </textarea>
+          <!-- Flèche animée à droite -->
+          <div class="relative z-10 text-blue-600
+                      group-hover:text-emerald-400
+                      transition-all duration-300
+                      translate-x-0 group-hover:translate-x-2
+                      opacity-0 group-hover:opacity-100 text-xl">
+            →
           </div>
 
-          <!-- BUTTON -->
-          <button @click="sendMessage"
-                  class="w-full py-3 bg-emerald-600 hover:bg-emerald-700
-                         text-white font-mono text-sm rounded-lg
-                         transition-all hover:-translate-y-0.5
-                         hover:shadow-lg">
-            {{ t.contact.send }} →
-          </button>
+          <!-- Particules qui apparaissent au hover -->
+          <div class="absolute top-2 right-4 w-1.5 h-1.5 rounded-full
+                      bg-emerald-400 opacity-0 group-hover:opacity-100
+                      group-hover:animate-ping transition-opacity duration-300"></div>
+          <div class="absolute bottom-3 right-10 w-1 h-1 rounded-full
+                      bg-blue-300 opacity-0 group-hover:opacity-60
+                      transition-opacity duration-500"
+               style="transition-delay: 100ms;"></div>
 
-          <!-- SUCCESS -->
-          <div v-if="sent"
-               class="p-4 rounded-lg bg-emerald-50 dark:bg-emerald-900/20
-                      border border-emerald-200 dark:border-emerald-800
-                      text-emerald-600 text-center font-mono text-sm">
-            ✓ {{ t.contact.success }}
-          </div>
-
-        </div>
+        </a>
 
       </div>
+
+      <!-- ─── MESSAGE BAS DE PAGE ───────────────────────── -->
+      <div class="text-center mt-16">
+        <p class="font-mono text-xs text-blue-500">
+          Réponse garantie sous 24h · Response guaranteed within 24h
+        </p>
+        <div class="mt-4 flex justify-center items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          
+        </div>
+      </div>
+
     </div>
   </section>
 </template>
 
 <script>
-/* SVG ICONS */
-const GmailIcon = {
-  template: `
-    <svg viewBox="0 0 24 24" fill="currentColor" class="text-red-500">
-      <path d="M20 18V8l-8 5-8-5v10h16z"/>
-      <path d="M20 6H4l8 5 8-5z"/>
-    </svg>
-  `
-}
-
-const GitHubIcon = {
-  template: `
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.1c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 2.1-.7 2.1-.7.1-.8.4-1.4.7-1.7-2.5-.3-5.1-1.2-5.1-5.3 0-1.2.4-2.2 1.2-3-.1-.3-.5-1.4.1-2.9 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17.6 4.8 18.6 5.1 18.6 5.1c.6 1.5.2 2.6.1 2.9.8.8 1.2 1.8 1.2 3 0 4.1-2.6 5-5.1 5.3.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/>
-    </svg>
-  `
-}
-
-const LinkedInIcon = {
-  template: `
-    <svg viewBox="0 0 24 24" fill="currentColor" class="text-blue-600">
-      <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0H12v2.2h.1c.6-1.2 2.1-2.4 4.3-2.4 4.6 0 5.5 3 5.5 6.9V24h-5v-7.5c0-1.8 0-4.1-2.5-4.1s-2.9 1.9-2.9 4V24h-5V8z"/>
-    </svg>
-  `
-}
-
 export default {
   name: 'ContactSection',
-
-  components: {
-    GmailIcon,
-    GitHubIcon,
-    LinkedInIcon
-  },
-
-  props: {
-    t: Object
-  },
+  props: { t: Object },
 
   data() {
     return {
-      profileImage: '/images/profile.jpg', // 👉 place ton image ici (public/images)
+      // Contrôle l'animation d'entrée
+      visible: false,
 
-      form: {
-        name: '',
-        email: '',
-        message: ''
+      links: [
+        {
+          label: 'Email',
+          value: 'moussaifsaad4@gmail.com',
+          href: 'mailto:moussaifsaad4@gmail.com',
+          icon: 'gmail.png',
+          imgClass: '',
+          imgHoverClass: 'group-hover:animate-bounce',
+          iconHoverClass: 'group-hover:animate-shake',
+          // Couleur rouge Gmail au hover
+          bgClass: 'bg-red-500/8',
+          lineClass: 'bg-red-400',
+          hoverClass: 'hover:shadow-red-500/10',
+        },
+        {
+          label: 'GitHub',
+          value: 'github.com/saadmoussaif',
+          href: 'https://github.com/saadmoussaif',
+          icon: 'github.png',
+          imgClass: 'opacity-80',
+          imgHoverClass: 'group-hover:drop-shadow-lg group-hover:brightness-110 group-hover:opacity-100 github-glow',
+          iconHoverClass: 'group-hover:animate-glow',
+          // Couleur grise GitHub au hover
+          bgClass: 'bg-white/5',
+          lineClass: 'bg-gray-300',
+          hoverClass: 'hover:shadow-gray-500/10',
+        },
+        {
+          label: 'LinkedIn',
+          value: 'linkedin.com/in/saad-moussaif',
+          href: 'https://www.linkedin.com/in/saad-moussaif-369182226/',
+          icon: 'linkdin.png',
+          imgClass: '',
+          imgHoverClass: 'group-hover:rotate-12 group-hover:scale-125',
+          iconHoverClass: 'group-hover:animate-float',
+          // Couleur bleue LinkedIn au hover
+          bgClass: 'bg-blue-400/10',
+          lineClass: 'bg-blue-400',
+          hoverClass: 'hover:shadow-blue-400/15',
+        },
+      ],
+    }
+  },
+
+  mounted() {
+    // Animation réactivable à chaque scroll entrer/sortir
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isVisible = entries.some(entry => entry.isIntersecting)
+        this.visible = isVisible
       },
-
-      sent: false,
-
-     links: [
-  {
-    label: 'Email',
-    value: 'moussaifsaad4@gmail.com',
-    href: 'https://mail.google.com/...',
-    icon: 'gmail.png'
+      { threshold: 0.25 }
+    )
+    observer.observe(this.$el)
   },
-  {
-    label: 'GitHub',
-    value: 'github.com/moussaifsaad',
-    href: 'https://github.com/saadmoussaif',
-    icon: 'github.png'
-  },
-  {
-    label: 'LinkedIn',
-    value: 'linkedin.com/in/moussaifsaad',
-    href: 'https://www.linkedin.com/...',
-    icon: 'LinkedInIcon'  }
-]
-    }
-  },
-
-  computed: {
-    components() {
-      return {
-        GmailIcon,
-        GitHubIcon,
-        LinkedInIcon
-      }
-    }
-  },
-
-  methods: {
-    sendMessage() {
-      if (this.form.name && this.form.email && this.form.message) {
-        this.sent = true
-        this.form = { name: '', email: '', message: '' }
-
-        setTimeout(() => {
-          this.sent = false
-        }, 4000)
-      }
-    }
-  }
 }
 </script>
+
+<style scoped>
+/* Animations avancées pour les liens */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.8), 0 0 30px rgba(168, 85, 247, 0.4); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-shake:hover {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animate-glow:hover {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-float:hover {
+  animation: float 1s ease-in-out infinite;
+}
+
+/* Amélioration de l'animation bounce pour Gmail */
+.group:hover .animate-bounce {
+  animation: bounce 0.6s ease-in-out;
+}
+
+/* Style spécial pour GitHub */
+.github-glow:hover {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+
+/* Animation globale de hover LINK */
+.link-hover-effect:hover {
+  background-image: linear-gradient(90deg, rgba(56, 189, 248, 0.35), rgba(14, 165, 233, 0.25));
+  border-color: rgba(56, 189, 248, 0.8);
+  box-shadow: 0 18px 30px rgba(14, 165, 233, 0.25);
+}
+
+.link-hover-effect:hover .relative.z-10 {
+  transform: translateY(-1px) scale(1.04);
+}
+</style>
