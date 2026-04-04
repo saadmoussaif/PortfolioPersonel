@@ -37,6 +37,7 @@ import ContactSection   from './components/ContactSection.vue'
 import FooterSection from './components/FooterSection.vue'
 import LangLoader from './components/Langloader.vue'
 
+
 import { translations } from './translations.js'
 
 export default {
