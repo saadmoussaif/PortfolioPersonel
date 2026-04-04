@@ -15,10 +15,7 @@
         © 2026 — {{ t.footer.copy }}
       </span>
 
-      <!-- Stack utilisée -->
-      <span class="font-mono text-xs text-gray-400">
-        Vue.js · Tailwind · Vite
-      </span>
+      
 
     </div>
   </footer>
